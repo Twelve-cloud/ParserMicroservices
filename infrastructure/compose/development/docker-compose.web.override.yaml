@@ -3,7 +3,7 @@ version: '3.7'
 services:
   uvicorn:
     build:
-      context: ./tlparser
+      context: ./twich_parser_service
       dockerfile: ./Dockerfile
     entrypoint:
       - ./entrypoint.sh

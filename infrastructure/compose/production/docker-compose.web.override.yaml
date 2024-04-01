@@ -3,7 +3,7 @@ version: '3.7'
 services:
   nginx:
     build:
-      context: ./tlparser
+      context: ./twich_parser_service
       dockerfile: ./docker/Dockerfile.nginx.prd
     hostname: nginx
     container_name: nginx
@@ -30,7 +30,7 @@ services:
 
   uvicorn:
     build:
-      context: ./tlparser
+      context: ./twich_parser_service
       dockerfile: ./docker/Dockerfile.uvicorn.prd
     entrypoint:
       - ./entrypoint-uvicorn.prd.sh
@@ -68,7 +68,7 @@ services:
 
   sphinx:
     build:
-      context: ./tlparser
+      context: ./twich_parser_service
       dockerfile: ./docs/nginx/Dockerfile
     hostname: sphinx
     container_name: sphinx
