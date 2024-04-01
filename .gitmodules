@@ -1,0 +1,3 @@
+[submodule "twich_parser_service"]
+	path = twich_parser_service
+	url = git@github.com:Twelve-cloud/twich_parser_service.git
