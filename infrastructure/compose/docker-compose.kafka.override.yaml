@@ -8,15 +8,15 @@ services:
     ports:
       - 22181:${ZOOKEEPER_CLIENT_PORT}
     env_file:
-      - ./env/production/.env.prd.kafka
+      - ./env/.env.kafka
     healthcheck:
       test: ["CMD-SHELL", "nc -z zookeeper ${ZOOKEEPER_CLIENT_PORT} || exit -1"]
       interval: 5s
       timeout: 10s
       retries: 10
     networks:
-      back-prod:
-        ipv4_address: 172.168.10.2
+      parser:
+        ipv4_address: 192.168.10.2
     restart: always
 
   kafka:
@@ -26,7 +26,7 @@ services:
     ports:
       - 29092:${KAFKA_PORT}
     env_file:
-      - ./env/production/.env.prd.kafka
+      - ./env/.env.kafka
     healthcheck:
       test: ["CMD-SHELL", "nc -z kafka ${KAFKA_PORT} || exit -1"]
       start_period: 15s
@@ -34,8 +34,8 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      back-prod:
-        ipv4_address: 172.168.10.3
+      parser:
+        ipv4_address: 192.168.10.3
     links:
       - zookeeper
     depends_on:
@@ -48,9 +48,9 @@ services:
     hostname: kafka-ui
     container_name: kafka-ui
     ports:
-      - 8080:${KAFKA_UI_PORT}
+      - 8001:${KAFKA_UI_PORT}
     env_file:
-      - ./env/production/.env.prd.kafka
+      - ./env/.env.kafka
     healthcheck:
       test: ["CMD-SHELL", "nc -z kafka-ui ${KAFKA_UI_PORT} || exit -1"]
       start_period: 15s
@@ -58,8 +58,8 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      back-prod:
-        ipv4_address: 172.168.10.4
+      parser:
+        ipv4_address: 192.168.10.4
     links:
       - kafka
     depends_on:

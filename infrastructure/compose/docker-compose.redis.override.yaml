@@ -11,15 +11,15 @@ services:
     environment:
       REDIS_ARGS: "--requirepass ${REDIS_PASSWORD} --user ${REDIS_USERNAME} on >${REDIS_PASSWORD} ~* &* +@all --user default off nopass -@all"
     env_file:
-      - ./env/development/.env.dev.redis
+      - ./env/.env.redis
     volumes:
-      - ./data/dev/redis:/data
+      - ./data/redis:/data
     healthcheck:
       test: ["CMD-SHELL", "redis-cli --user ${REDIS_USERNAME} --pass ${REDIS_PASSWORD} ping"]
       interval: 10s
       timeout: 5s
       retries: 10
     networks:
-      back-dev:
+      parser:
         ipv4_address: 192.168.10.9
     restart: always

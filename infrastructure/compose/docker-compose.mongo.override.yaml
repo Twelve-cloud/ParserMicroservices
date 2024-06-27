@@ -8,17 +8,17 @@ services:
     ports:
       - 27017:${MONGO_PORT}
     env_file:
-      - ./env/production/.env.prd.mongo
+      - ./env/.env.mongo
     volumes:
-      - ./data/prd/mongo:/data/db
+      - ./data/mongo:/data/db
     healthcheck:
-      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 10
     networks:
-      back-prod:
-        ipv4_address: 172.168.10.5
+      parser:
+        ipv4_address: 192.168.10.5
     restart: always
 
   mongo-express:
@@ -28,15 +28,15 @@ services:
     ports:
       - 8081:${MONGO_EXPRESS_PORT}
     env_file:
-      - ./env/production/.env.prd.mongo
+      - ./env/.env.mongo
     healthcheck:
       test: ["CMD-SHELL", "nc -z mongo-express ${MONGO_EXPRESS_PORT} || exit -1"]
       interval: 5s
       timeout: 10s
       retries: 10
     networks:
-      back-prod:
-        ipv4_address: 172.168.10.6
+      parser:
+        ipv4_address: 192.168.10.6
     links:
       - mongo
     depends_on:

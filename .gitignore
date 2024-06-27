@@ -1,6 +1,7 @@
-.env
+.vscode
 data
-env/production/*
-env/development/*
-!env/production/*example*
-!env/development/*example*
+.env
+env/*
+!env/*example*
+certs/*
+!certs/*example*

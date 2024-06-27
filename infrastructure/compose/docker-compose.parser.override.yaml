@@ -1,20 +1,20 @@
 version: '3.7'
 
 services:
-  uvicorn:
+  parser:
     build:
       context: ./twich_parser_service
       dockerfile: ./Dockerfile
-    entrypoint:
-      - ./entrypoint.sh
-    hostname: uvicorn
-    container_name: uvicorn
+      target: development
+    hostname: parser
+    container_name: parser
     ports:
       - 8000:${WEB_UVICORN_PORT}
     env_file:
-    - ./env/development/.env.dev.web
+    - ./env/.env.web
     volumes:
-      - ./certs/development:/code/certs:ro/
+      - ./certs:/opt/certs:ro
+      - ./twich_parser_service/src:/code/src
     healthcheck:
       test: ["CMD-SHELL", "curl -k https://localhost:${WEB_UVICORN_PORT}/api/v1/docs"]
       interval: 10s
@@ -26,14 +26,14 @@ services:
     links:
       - kafka
       - mongo
-      - elastic
+      - postgres
       - redis
     depends_on:
       kafka:
         condition: service_healthy
       mongo:
         condition: service_healthy
-      elastic:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
