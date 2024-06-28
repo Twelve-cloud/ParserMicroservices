@@ -6,8 +6,9 @@ services:
     hostname: redis
     container_name: redis
     ports:
-      - 6379:${REDIS_PORT}
-      - 8001:${REDIS_INSIGHT_PORT}
+      - 8004:${REDIS_INSIGHT_PORT}
+    expose:
+      - ${REDIS_PORT}
     environment:
       REDIS_ARGS: "--requirepass ${REDIS_PASSWORD} --user ${REDIS_USERNAME} on >${REDIS_PASSWORD} ~* &* +@all --user default off nopass -@all"
     env_file:
@@ -20,6 +21,6 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      parser:
+      parsnet:
         ipv4_address: 192.168.10.9
     restart: always

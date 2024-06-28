@@ -5,8 +5,8 @@ services:
     image: mongo:7.0-rc-jammy
     hostname: mongo
     container_name: mongo
-    ports:
-      - 27017:${MONGO_PORT}
+    expose:
+      - ${MONGO_PORT}
     env_file:
       - ./env/.env.mongo
     volumes:
@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      parser:
+      parsnet:
         ipv4_address: 192.168.10.5
     restart: always
 
@@ -26,7 +26,7 @@ services:
     hostname: mongo-express
     container_name: mongo-express
     ports:
-      - 8081:${MONGO_EXPRESS_PORT}
+      - 8002:${MONGO_EXPRESS_PORT}
     env_file:
       - ./env/.env.mongo
     healthcheck:
@@ -35,7 +35,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      parser:
+      parsnet:
         ipv4_address: 192.168.10.6
     links:
       - mongo

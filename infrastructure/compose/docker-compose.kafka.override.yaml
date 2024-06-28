@@ -5,8 +5,8 @@ services:
     image: confluentinc/cp-zookeeper:7.4.3
     hostname: zookeeper
     container_name: zookeeper
-    ports:
-      - 22181:${ZOOKEEPER_CLIENT_PORT}
+    expose:
+      - ${ZOOKEEPER_CLIENT_PORT}
     env_file:
       - ./env/.env.kafka
     healthcheck:
@@ -15,7 +15,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      parser:
+      parsnet:
         ipv4_address: 192.168.10.2
     restart: always
 
@@ -23,8 +23,8 @@ services:
     image: confluentinc/cp-kafka:7.4.3
     hostname: kafka
     container_name: kafka
-    ports:
-      - 29092:${KAFKA_PORT}
+    expose:
+      - ${KAFKA_PORT}
     env_file:
       - ./env/.env.kafka
     healthcheck:
@@ -34,7 +34,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      parser:
+      parsnet:
         ipv4_address: 192.168.10.3
     links:
       - zookeeper
@@ -58,7 +58,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      parser:
+      parsnet:
         ipv4_address: 192.168.10.4
     links:
       - kafka
