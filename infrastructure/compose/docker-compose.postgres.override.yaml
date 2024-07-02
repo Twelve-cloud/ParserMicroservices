@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   postgres:
+    user: root
     image: postgres:16.3-alpine3.20
     hostname: postgres
     container_name: postgres
@@ -40,7 +41,7 @@ services:
     env_file:
       - ./env/.env.postgres
     volumes:
-      - ./data/postgres:/data/db
+      - ./.data/postgres-data:/data/db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -52,15 +53,18 @@ services:
     restart: always
 
   pgadmin:
-    image: dpage/pgadmin4
+    user: root
+    image: dpage/pgadmin4:8.9
     hostname: pgadmin
     container_name: pgadmin
     ports:
-      - 8003:${PGADMIN_LISTEN_PORT}
+      - 8003:${PGADMIN_PORT}
     env_file:
       - ./env/.env.postgres
+    volumes:
+      - ./.data/pgadmin-data:/var/lib/pgadmin
     healthcheck:
-      test: ["CMD-SHELL", "nc -z mongo-express ${MONGO_EXPRESS_PORT} || exit -1"]
+      test: ["CMD-SHELL", "nc -z pgadmin ${PGADMIN_PORT} || exit -1"]
       interval: 10s
       timeout: 5s
       retries: 10

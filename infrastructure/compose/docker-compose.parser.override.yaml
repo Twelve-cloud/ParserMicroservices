@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   parser:
+    user: root
     build:
       context: ./twich_parser_service
       dockerfile: ./Dockerfile
@@ -9,20 +10,20 @@ services:
     hostname: parser
     container_name: parser
     ports:
-      - 8000:${WEB_UVICORN_PORT}
+      - 8000:${PARSER_PORT}
     env_file:
     - ./env/.env.web
     volumes:
       - ./certs:/opt/certs:ro
       - ./twich_parser_service/src:/code/src
     healthcheck:
-      test: ["CMD-SHELL", "curl -k https://localhost:${WEB_UVICORN_PORT}/api/v1/docs"]
+      test: ["CMD-SHELL", "curl -k https://localhost:${PARSER_PORT}/api/v1/docs"]
       interval: 10s
       timeout: 5s
       retries: 10
     networks:
       parsnet:
-        ipv4_address: 192.168.10.10
+        ipv4_address: 192.168.10.11
     links:
       - kafka
       - mongo
